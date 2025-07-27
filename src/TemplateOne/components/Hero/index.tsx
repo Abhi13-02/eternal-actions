@@ -4,6 +4,8 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { SITE_CONFIG } from "../../constants"
+import Image from "next/image"
+import logo from "@/public/logo.png"
 
 export const Hero: React.FC = () => {
   const [email, setEmail] = useState("")
@@ -21,10 +23,10 @@ export const Hero: React.FC = () => {
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12"
+          className="my-12"
         >
-          <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto shadow-[0_8px_32px_rgba(59,130,246,0.3),0_4px_16px_rgba(59,130,246,0.2)]">
-            <div className="w-8 h-8 bg-white rounded-full"></div>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-[0_8px_32px_rgba(59,130,246,0.3),0_4px_16px_rgba(59,130,246,0.2)]">
+            <Image src={logo} alt="Waitify" width={32} height={32} className="w-16 h-16" />
           </div>
         </motion.div>
 

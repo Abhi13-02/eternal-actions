@@ -4,16 +4,18 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { NAVIGATION_ITEMS } from "../../constants"
+import Image from "next/image"
+import { BookACallButton } from "./BookACallButton"
 
 export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState("hero")
   const [isScrolled, setIsScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
 
-      // Detect active section
       const sections = ["hero", "benefits", "integrations", "testimonials", "faq"]
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section)
@@ -37,7 +39,9 @@ export const Navbar: React.FC = () => {
     const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      window.history.pushState({}, "", href)
     }
+    setMenuOpen(false)
   }
 
   const isHeroSection = activeSection === "hero"
@@ -47,21 +51,20 @@ export const Navbar: React.FC = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
-        isScrolled ? "scale-95" : "scale-100"
-      } ${isHeroSection ? "w-[90%] max-w-5xl" : "w-auto max-w-xl"}`}
+      className={`fixed sm:top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
+        isHeroSection ? "w-6xl" : "w-2xl"
+      }${isScrolled ? " shadow-md" : ""}`}
     >
-      <div className={`bg-white/90 backdrop-blur-md rounded-full px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/20 transition-all duration-500`}>
-        <div className="flex items-center space-x-6">
+      <div className="bg-gray-100 sm:rounded-full px-2 py-1 shadow-blue-400 border-4 border-gray-200 ">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(59,130,246,0.3)]">
-              <div className="w-4 h-4 bg-white rounded-full"></div>
-            </div>
-          </motion.div>
-
-          {/* Navigation Items */}
           <div className="flex items-center space-x-2">
+            <Image src="/logo.png" alt="Waitify" width={32} height={32} className="w-14 h-14" />
+            <span className={`font-semibold text-lg ${isHeroSection ? "text-2xl" : "hidden"}`}>Waitify</span>
+          </div>
+
+          {/* Desktop nav items */}
+          <div className="hidden md:flex items-center space-x-4">
             {NAVIGATION_ITEMS.map((item) => {
               const sectionId = item.href.replace("#", "")
               const isActive = activeSection === sectionId
@@ -91,23 +94,54 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Phone Icon */}
-          <motion.button
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            whileTap={{ scale: 0.95 }}
-            className="p-2 text-blue-500 hover:text-blue-600 transition-colors duration-200"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-              />
-            </svg>
-          </motion.button>
+          {/* Right side - BookACall button and Mobile menu */}
+          <div className="flex items-center space-x-4">
+            {/* BookACall Button - visible on desktop */}
+            <div className="hidden md:block">
+              <BookACallButton isHeroSection={isHeroSection} />
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="p-2 focus:outline-none text-black"
+              >
+                {menuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {menuOpen && (
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-full bg-white rounded-b-3xl p-6 z-40 shadow-xl backdrop-blur-lg border border-white/30 md:hidden">
+          <div className="flex flex-col items-center space-y-4">
+            {NAVIGATION_ITEMS.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => scrollToSection(item.href)}
+                className="text-gray-800 hover:text-blue-600 text-lg font-medium"
+              >
+                {item.label}
+              </button>
+            ))}
+            {/* Mobile BookACall Button */}
+            <div className="mt-4">
+              <BookACallButton isHeroSection={true} />
+            </div>
+          </div>
+        </div>
+      )}
     </motion.nav>
   )
 }

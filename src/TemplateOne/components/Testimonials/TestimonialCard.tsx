@@ -48,7 +48,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, av
       </div>
 
       {/* Content */}
-      <p className="text-gray-700 leading-relaxed">"{content}"</p>
+      <p className="text-gray-700 leading-relaxed">&ldquo;{content}&rdquo;</p>
     </motion.div>
   )
 }

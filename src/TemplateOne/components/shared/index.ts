@@ -1,5 +1,6 @@
 export { Navbar } from "./Navbar"
 export { Footer } from "./Footer"
-export { AnimatedButton } from "./AnimatedButton"
 export { SectionBadge } from "./SectionBadge"
 export { SectionHeading } from "./SectionHeading"
+export { AnimatedButton } from "./AnimatedButton"
+export { BookACallButton } from "./BookACallButton"

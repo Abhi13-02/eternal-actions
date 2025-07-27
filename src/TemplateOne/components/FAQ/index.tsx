@@ -14,7 +14,7 @@ export const FAQ: React.FC = () => {
         <div className="text-center mb-16">
           <SectionBadge>FAQ</SectionBadge>
           <SectionHeading>
-            Got Questions? <span className="text-blue-500">We've Got Answers.</span>
+            Got Questions? <span className="text-blue-500">We&apos;ve Got Answers.</span>
           </SectionHeading>
           <p className="text-lg text-gray-600 mt-4">Quick, clear answers to help you get started with Nexora.</p>
         </div>

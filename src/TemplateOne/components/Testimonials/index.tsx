@@ -17,7 +17,7 @@ export const Testimonials: React.FC = () => {
             What <span className="text-blue-500">Our Early Users</span> Are Saying
           </SectionHeading>
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what users think about Nexora.
+            Don&apos;t just take our word for it. Here&apos;s what users think about Nexora.
           </p>
         </div>
 
